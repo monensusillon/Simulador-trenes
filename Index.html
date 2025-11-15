@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Simulador ADIF</title>
+<style>
+body { font-family: Arial, sans-serif; background: #f0f0f0; margin: 10px; }
+h1 { text-align: center; }
+.way { width: 180px; height: 40px; margin: 5px auto; line-height: 40px; text-align: center; color: #fff; border-radius: 5px; cursor: pointer; }
+.red { background: red; }
+.yellow { background: goldenrod; }
+.blue { background: blue; }
+.green { background: green; }
+button { padding: 8px; margin: 5px; font-size: 14px; }
+#logs { width: 90%; max-width: 600px; height: 150px; margin: 10px auto; overflow-y: auto; background: #fff; border: 1px solid #ccc; padding: 5px; font-size: 14px; }
+</style>
+</head>
+<body>
+<h1>Simulador ADIF</h1>
+
+<div id="vias">
+  <div id="via1" class="way red">Vía 1 (Rojo)</div>
+  <div id="via2" class="way yellow">Vía 2 (Amarillo)</div>
+  <div id="via3" class="way blue">Vía 3 (Azul)</div>
+  <div id="via4" class="way green">Vía 4 (Verde)</div>
+  <div id="via5" class="way red">Vía 5 (Rojo)</div>
+  <div id="via6" class="way yellow">Vía 6 (Amarillo)</div>
+</div>
+
+<div style="text-align:center;">
+  <button onclick="bloquearColateral('A')">Bloquear colateral A</button>
+  <button onclick="liberarColateral('A')">Liberar colateral A</button>
+  <button onclick="simularTren('llegada')">Simular llegada</button>
+  <button onclick="simularTren('salida')">Simular salida</button>
+  <button onclick="ejercicio()">Ejercicio preprogramado</button>
+</div>
+
+<h2 style="text-align:center;">Libros</h2>
+<div id="logs"></div>
+
+<audio id="sonidoLlegada">
+  <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+</audio>
+<audio id="sonidoSalida">
+  <source src="https://actions.google.com/sounds/v1/alarms/medium_bell_ring.ogg" type="audio/ogg">
+</audio>
+
+<script>
+const logs = document.getElementById('logs');
+
+function log(mensaje) {
+  const hora = new Date().toLocaleTimeString();
+  logs.innerHTML += `[${hora}] ${mensaje}<br>`;
+  logs.scrollTop = logs.scrollHeight;
+}
+
+function cambiarColor(viaId, color) {
+  const via = document.getElementById(viaId);
+  via.className = `way ${color}`;
+  log(`Vía ${viaId.replace('via','')} cambiada a ${color}`);
+}
+
+function bloquearColateral(colateral) {
+  log(`Colateral ${colateral} BLOQUEADO`);
+}
+
+function liberarColateral(colateral) {
+  log(`Colateral ${colateral} LIBERADO`);
+}
+
+function simularTren(tipo) {
+  if(tipo === 'llegada') {
+    document.getElementById('sonidoLlegada').play();
+    log('Tren en llegada');
+  } else {
+    document.getElementById('sonidoSalida').play();
+    log('Tren en salida');
+  }
+}
+
+// Ejercicio preprogramado: cambiar colores y registrar bloqueos
+function ejercicio() {
+  log('--- Iniciando ejercicio preprogramado ---');
+  cambiarColor('via1','red');
+  cambiarColor('via2','yellow');
+  cambiarColor('via3','blue');
+  cambiarColor('via4','green');
+  bloquearColateral('A');
+  setTimeout(()=>liberarColateral('A'), 5000);
+  log('--- Fin de ejercicio ---');
+}
+</script>
+
+</body>
+</html>
